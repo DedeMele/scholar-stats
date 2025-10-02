@@ -1,4 +1,4 @@
-name: Update Scholar Data
+name: Update_Scholar_Data
 
 on:
   schedule:
