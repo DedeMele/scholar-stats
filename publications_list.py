@@ -41,5 +41,6 @@ with open("publications.json", "w", encoding="utf-8") as f:
 # Sauvegarde version "références"
 with open("publications.txt", "w", encoding="utf-8") as f:
     f.write("\n".join(biblio_lines))
+    
 
 print(f"publications.json et publications.txt créés avec {len(publications_data)} publications.")
