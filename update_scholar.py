@@ -14,7 +14,7 @@ except Exception as e:
     sys.exit(1)
 
 AUTHOR_NAME = os.environ.get("AUTHOR_NAME", "David Mele")   # remplace via le workflow ou localement
-AUTHOR_ID   = os.environ.get("AUTHOR_ID", tMJF76UAAAAJ)         # optionnel : id Google Scholar (valeur user=xxxx dans l'URL)
+AUTHOR_ID   = os.environ.get("AUTHOR_ID", "tMJF76UAAAAJ")         # optionnel : id Google Scholar (valeur user=xxxx dans l'URL)
 
 def get_author_by_name(name, max_results=10):
     gen = scholarly.search_author(name)
