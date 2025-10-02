@@ -2,16 +2,20 @@ name: Update Scholar Data
 
 on:
   schedule:
-    - cron: "0 0 * * *"   # Tous les jours à minuit UTC
-  workflow_dispatch:       # Permet aussi de lancer manuellement
+    - cron: "0 0 * * *"   # tous les jours à minuit UTC
+  workflow_dispatch:     # permet lancement manuel
+
+permissions:
+  contents: write
 
 jobs:
   update-data:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
+        with:
+          persist-credentials: true
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -21,13 +25,24 @@ jobs:
       - name: Install dependencies
         run: pip install scholarly
 
-      - name: Run script
+      - name: Run update script
+        env:
+          # REMPLACE "Ton Nom" par ton nom EXACT sur Google Scholar, ou mets AUTHOR_ID ci-dessous
+          AUTHOR_NAME: "David Mele"
+          # AUTHOR_ID: "tMJF76UAAAAJ"   # optionnel : met l'ID (user=XXXX dans l'URL du profil Google Scholar)
         run: python update_scholar.py
 
-      - name: Commit and push changes
+      - name: Commit and push data.json (si modifié)
         run: |
-          git config user.name "github-actions"
-          git config user.email "actions@github.com"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data.json
-          git commit -m "Update data.json"
-          git push
+          # commit seulement si des changements sont présents
+          if ! git diff --staged --quiet; then
+            git commit -m "Update data.json (GitHub Actions)"
+            git push
+            echo "data.json poussé."
+          else
+            echo "Aucun changement à committer."
+          fi
+
